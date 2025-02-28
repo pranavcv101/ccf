@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Verification</title>
+
+</head>
+<body>
+    <h1>CCF Security Check</h1>
+
+    <!-- Form to Fetch Bookings -->
+    <form method="POST">
+        <div>
+            <label for="rollno">Roll Number:</label><br>
+            <input type="text" id="rollno" name="rollno" size="30" required>
+        </div>
+
+        <div>
+            <button type="submit" name="fetch_bookings" class="btn btn-lg btn-block btn-primary">
+                Fetch Bookings
+            </button>
+        </div>
+    </form>
+
+    <!-- Display Bookings if Available -->
+    {% if bookings %}
+        <h3>Select a Booking:</h3>
+        <form method="POST">
+            <div>
+                <label for="booking">Choose a booking:</label>
+                <select id="booking" name="booking" required>
+                    {% for booking in bookings %}
+                        <option value="{{ booking.id }}">
+                            Comp: {{ booking.comp_id }}, Start: {{ booking.start_time }}, Duration: {{ booking.duration }} mins
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" name="unlock" class="btn btn-lg btn-block btn-success">
+                Unlock Computer
+            </button>
+        </form>
+    {% endif %}
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
