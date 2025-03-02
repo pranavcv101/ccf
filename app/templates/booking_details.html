@@ -33,6 +33,7 @@
                     <th>Scheduled Date & Time</th>
                     <th>Duration (minutes)</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,10 +45,16 @@
                         <td class="booking-datetime">{{ booking.scheduled_datetime }}</td>
                         <td>{{ booking.duration }}</td>
                         <td>{{ booking.status }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('cancel_a_booking', booking_id=booking.id) }}" onsubmit="return confirmCancel()">
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                        </td>
+                        
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="6" class="text-center">No bookings found</td>
+                        <td colspan="7" class="text-center">No bookings found</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -83,6 +90,12 @@
                 }
             }
         }
+
+        function confirmCancel() {
+            return confirm("Are you sure you want to cancel this booking?");
+        }
+
+
     </script>
 
 </body>

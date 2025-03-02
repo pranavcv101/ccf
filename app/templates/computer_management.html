@@ -53,6 +53,7 @@
                     <th>Computer ID</th>
                     <th>Status</th>
                     <th>Availability</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -61,10 +62,17 @@
                         <td>{{ computer.comp_id }}</td>
                         <td>{{ computer.status }}</td>
                         <td>{{ 'Available' if computer.is_available else 'Not Available' }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('toggle_availability', comp_id=computer.comp_id) }}">
+                                <button type="submit" class="btn btn-sm {{ 'btn-success' if not computer.is_available else 'btn-warning' }}">
+                                    {{ 'Make Available' if not computer.is_available else 'Make Unavailable' }}
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 {% else %}
                     <tr>
-                        <td colspan="3" class="text-center">No computers available</td>
+                        <td colspan="4" class="text-center">No computers available</td>
                     </tr>
                 {% endfor %}
             </tbody>

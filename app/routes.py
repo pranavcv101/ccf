@@ -123,8 +123,8 @@ def student_page():
     student_bookings = Booking.query.filter_by(user_rollno=current_user.rollno).all()
     return render_template("student.html",student=current_user,bookings = student_bookings)
 
-@app.route('/cancel_booking', methods=['POST'])
-def cancel_booking():
+@app.route('/cancel_s_booking', methods=['POST'])
+def cancel_s_booking():
     booking_id = request.form.get('booking_id')
     booking = Booking.query.get(booking_id)
 
@@ -270,6 +270,14 @@ def booking_details_page():
     bookings = Booking.query.all()
     return render_template("booking_details.html", bookings=bookings)
 
+@app.route('/cancel_a_booking/<int:booking_id>', methods=['POST'])
+def cancel_a_booking(booking_id):
+    booking = Booking.query.get(booking_id)
+    if booking:
+        db.session.delete(booking)
+        db.session.commit()
+    return redirect(url_for('booking_details_page'))
+
 
 
 
@@ -322,6 +330,15 @@ def computer_management():
     computers = Computer.query.all()
     return render_template('computer_management.html', computers=computers, 
                            add_update_form=add_update_form, remove_form=remove_form)
+
+@app.route('/toggle_availability/<comp_id>', methods=['POST'])
+def toggle_availability(comp_id):
+    computer = Computer.query.get(comp_id)
+    if computer:
+        computer.is_available = not computer.is_available
+        db.session.commit()
+    return redirect(url_for('computer_management'))
+
 
 
 
