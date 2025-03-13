@@ -1,6 +1,6 @@
 from flask import render_template,redirect,url_for,flash,request,jsonify
 from app import app,db
-from app.models import Users,Booking,Computer,Lastbookedcomputer,History,CurrentBooking
+from app.models import Users,Booking,Computer,Lastbookedcomputer,History,CurrentBooking,Admin,Security,Configurations
 from app.forms import StudentRegisterForm,LoginForm,BookingForm,AddUpdateComputerForm,RemoveComputerForm,SecurityForm
 from flask_login import login_user, logout_user, login_required, current_user
 from datetime import timedelta,datetime
@@ -151,6 +151,7 @@ def student_logout():
 @app.route('/make_booking', methods=['GET', 'POST'])
 @login_required
 def make_booking():
+    max_duration = Configurations.query.filter_by(variables ="max_duration").first()
     form = BookingForm()
     if form.validate_on_submit():
         start_time = form.start_time.data
@@ -184,7 +185,7 @@ def make_booking():
     elif request.method == 'POST':
         # Log validation errors for POST requests
         print('Form validation failed:', form.errors)
-    return render_template('make_booking.html', form=form)
+    return render_template('make_booking.html', form=form,max_duration = max_duration)
 
 def round_robin_assignment(start_time,duration_m):
     # Retrieve last booked computer
@@ -247,10 +248,22 @@ def check_availability(selected_computer, start_time, duration_m):
 ###  ADMIN SECTION ###
 ######################
 
-
+@app.route("/admin_login",methods = ['GET' , 'POST'])
+def admin_login_page():
+    form = LoginForm()
+    if form.validate_on_submit(): 
+        # Add authentication logic (check if rollNo and password are valid)
+        attempted_user = Admin.query.filter_by(username=form.rollno.data).first()
+        if attempted_user and attempted_user.check_password_correction(attempted_password=form.password.data):  # You should hash passwords in real scenario
+            login_user(attempted_user)
+            flash(f'Successfully logged in as {attempted_user.username}', 'success')
+            return redirect(url_for('admin_page'))  # Redirect after login
+        else:
+            flash('Login Unsuccessful. Check Roll No and password', 'danger')
+    return render_template("admin_login.html" ,form = form)
 
 @app.route("/admin_home")
-def admin_home_page():
+def admin_page():
     return render_template("admin_home.html")
 
 @app.route("/students_details" , methods = ['GET' , 'POST'])
@@ -342,13 +355,50 @@ def toggle_availability(comp_id):
 
 
 
+@app.route('/password_management')
+def password_management():
+    return render_template('password_management.html')
+
+
+@app.route('/configure', methods=['GET', 'POST'])
+def configure_page():
+    if request.method == 'POST':
+        var_name = request.form.get('variable')
+        new_value = request.form.get('new_value')
+
+        if var_name and new_value.isdigit():
+            config_entry = Configurations.query.filter_by(variables=var_name).first()
+            if config_entry:
+                config_entry.values = int(new_value)
+                db.session.commit()
+                flash(f"Updated {var_name} to {new_value}", "success")
+            else:
+                flash("Variable not found!", "danger")
+        else:
+            flash("Invalid input!", "warning")
+
+    configurations = Configurations.query.all()
+    return render_template('configure.html', configurations=configurations)
+
 
 
 ######################
 ###  SECURITY SECTION ###
 ######################S
 
-
+@app.route("/security_login",methods = ['GET' , 'POST'])
+def security_login_page():
+    form = LoginForm()
+    if form.validate_on_submit(): 
+        # Add authentication logic (check if rollNo and password are valid)
+        attempted_user = Security.query.filter_by(username=form.rollno.data).first()
+        if attempted_user and attempted_user.check_password_correction(attempted_password=form.password.data):  # You should hash passwords in real scenario
+            login_user(attempted_user)
+            flash(f'Successfully logged in as {attempted_user.username}', 'success')
+            return redirect(url_for('security_page'))  # Redirect after login
+        else:
+            flash('Login Unsuccessful. Check Roll No and password', 'danger')
+    return render_template("security_login.html" ,form = form)
 
 @app.route('/security', methods=['GET', 'POST'])
 def security_page():
@@ -402,3 +452,18 @@ def security_page():
 
 
 
+# Dummy database (Replace with PostgreSQL)
+passwords_db = {
+    "user1": {"password": "abcd1234", "duration": 8},  # 120 seconds unlock time
+}
+
+@app.route('/validate_password', methods=['POST'])
+def validate_password():
+    data = request.json
+    entered_password = data.get("password")
+
+    for user, details in passwords_db.items():
+        if details["password"] == entered_password:
+            return jsonify({"status": "success", "duration": details["duration"]})
+
+    return jsonify({"status": "failure", "message": "Incorrect password"}), 401

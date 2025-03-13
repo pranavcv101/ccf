@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white flex justify-center items-center h-screen">
+
+    <div class="w-full max-w-md bg-gray-800 p-8 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-center text-blue-400 mb-6">Security Login</h2>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+          {% if messages %}
+            <div class="mb-4">
+              {% for category, message in messages %}
+                <div class="p-3 rounded text-white bg-{{ 'green' if category == 'success' else 'red' }}-500">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="space-y-4">
+            {{ form.hidden_tag() }} <!-- CSRF protection -->
+
+            <!-- Username Input -->
+            <div>
+                <label for="rollno" class="block text-sm font-medium">Username</label>
+                {{ form.rollno(class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500") }}
+            </div>
+
+            <!-- Password Input -->
+            <div>
+                <label for="password" class="block text-sm font-medium">Password</label>
+                {{ form.password(class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500") }}
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-lg">
+                Login
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>

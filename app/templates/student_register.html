@@ -4,67 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Register</title>
-    <style>
-        body {
-            background-color: #282c34;
-            color: white;
-            text-align: center;
-        }
-        .form-register {
-            max-width: 330px;
-            margin: auto;
-        }
-        .form-control {
-            margin-bottom: 15px;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="text-center">
-    <div class="container">
-        <form method="POST" class="form-register">
+<body class="bg-gray-900 text-white flex justify-center items-center min-h-screen">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+        <form method="POST" class="space-y-4">
             {{ form.hidden_tag() }} <!-- CSRF protection -->
-            <h1 class="h3 mb-3 font-weight-normal">Student Registration</h1>
-            <br>
+            <h1 class="text-2xl font-semibold">Student Registration</h1>
 
             <!-- Roll Number Input -->
-            {{ form.rollno.label() }}
-            {{ form.rollno(class="form-control", placeholder="Roll Number") }}
-            <br>
+            <div>
+                {{ form.rollno.label(class="block text-left text-sm font-medium text-gray-300") }}
+                {{ form.rollno(class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600", placeholder="Roll Number") }}
+            </div>
 
             <!-- Name Input -->
-            {{ form.name.label() }}
-            {{ form.name(class="form-control", placeholder="Name") }}
-            <br>
+            <div>
+                {{ form.name.label(class="block text-left text-sm font-medium text-gray-300") }}
+                {{ form.name(class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600", placeholder="Name") }}
+            </div>
 
             <!-- Phone Input -->
-            {{ form.phone.label() }}
-            {{ form.phone(class="form-control", placeholder="Phone Number") }}
-            <br>
+            <div>
+                {{ form.phone.label(class="block text-left text-sm font-medium text-gray-300") }}
+                {{ form.phone(class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600", placeholder="Phone Number") }}
+            </div>
 
-             <!-- Batch input-->
-             {{ form.batch.label() }}
-             {{ form.batch(class="form-control", placeholder="Batch") }}
-             <br>
-            
-             <!-- YOP Input -->
-             {{ form.YOP.label() }}
-             {{ form.YOP(class="form-control", placeholder="YOP") }}
-             <br>
+            <!-- Batch input -->
+            <div>
+                {{ form.batch.label(class="block text-left text-sm font-medium text-gray-300") }}
+                {{ form.batch(class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600", placeholder="Batch") }}
+            </div>
+
+            <!-- YOP Input -->
+            <div>
+                {{ form.YOP.label(class="block text-left text-sm font-medium text-gray-300") }}
+                {{ form.YOP(class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600", placeholder="Year of Passing") }}
+            </div>
 
             <!-- Email Input -->
-            {{ form.email.label() }}
-            {{ form.email(class="form-control", placeholder="Email") }}
-            <br>
+            <div>
+                {{ form.email.label(class="block text-left text-sm font-medium text-gray-300") }}
+                {{ form.email(class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600", placeholder="Email") }}
+            </div>
 
             <!-- Password Input -->
-            {{ form.password.label() }}
-            {{ form.password(class="form-control", placeholder="Password") }}
-
-            <br>
+            <div>
+                {{ form.password.label(class="block text-left text-sm font-medium text-gray-300") }}
+                {{ form.password(class="w-full p-2 rounded bg-gray-700 text-white border border-gray-600", placeholder="Password") }}
+            </div>
 
             <!-- Submit Button -->
-            {{ form.submit(class="btn btn-lg btn-block btn-primary") }}
-
+            <div>
+                {{ form.submit(class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded") }}
+            </div>
         </form>
     </div>
 </body>

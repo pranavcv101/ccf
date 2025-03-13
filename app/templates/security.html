@@ -4,48 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Security Verification</title>
-
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>CCF Security Check</h1>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-6">
+    <div class="max-w-lg w-full bg-gray-800 p-8 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-center text-blue-400 mb-6">CCF Security Check</h1>
 
-    <!-- Form to Fetch Bookings -->
-    <form method="POST">
-        <div>
-            <label for="rollno">Roll Number:</label><br>
-            <input type="text" id="rollno" name="rollno" size="30" required>
-        </div>
-
-        <div>
-            <button type="submit" name="fetch_bookings" class="btn btn-lg btn-block btn-primary">
+        <!-- Form to Fetch Bookings -->
+        <form method="POST" class="mb-6">
+            <div class="mb-4">
+                <label for="rollno" class="block text-gray-300 mb-1">Roll Number:</label>
+                <input type="text" id="rollno" name="rollno" size="30" required 
+                    class="w-full p-3 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+            </div>
+            <button type="submit" name="fetch_bookings" 
+                class="w-full bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">
                 Fetch Bookings
             </button>
-        </div>
-    </form>
-
-    <!-- Display Bookings if Available -->
-    {% if bookings %}
-        <h3>Select a Booking:</h3>
-        <form method="POST">
-            <div>
-                <label for="booking">Choose a booking:</label>
-                <select id="booking" name="booking" required>
-                    {% for booking in bookings %}
-                        <option value="{{ booking.id }}">
-                            Comp: {{ booking.comp_id }}, Start: {{ booking.start_time }}, Duration: {{ booking.duration }} mins
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <button type="submit" name="unlock" class="btn btn-lg btn-block btn-success">
-                Unlock Computer
-            </button>
         </form>
-    {% endif %}
 
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
+        <!-- Display Bookings if Available -->
+        {% if bookings %}
+            <h3 class="text-xl font-semibold text-center mb-4">Select a Booking:</h3>
+            <form method="POST">
+                <div class="mb-4">
+                    <label for="booking" class="block text-gray-300 mb-1">Computer Id&emsp;&emsp;&emsp;Start time&emsp;&emsp;&emsp;&emsp;Duration</label>
+                    <select id="booking" name="booking" required 
+                        class="w-full p-3 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-green-500 text-white">
+                        {% for booking in bookings %}
+                            <option value="{{ booking.id }}">
+                                {{ booking.comp_id }} &emsp; {{ booking.start_time }}   &emsp; {{ booking.duration }} mins
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" name="unlock" 
+                    class="w-full bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded">
+                    Unlock Computer
+                </button>
+            </form>
+        {% endif %}
+
+        {% if error %}
+            <p class="text-red-500 text-center mt-4">{{ error }}</p>
+        {% endif %}
+    </div>
 </body>
 </html>
