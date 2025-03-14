@@ -22,5 +22,7 @@ login_manager.login_view = 'student_login_page'  # This is the view where the us
 login_manager.login_message_category = 'info'  # Flash message category for login-required messages
 
 #importing routes for flask to identify routes and other stuff  
-from app import routes
+from app import admin_routes
+from app import student_routes
+from app import security_routes
 from app import models

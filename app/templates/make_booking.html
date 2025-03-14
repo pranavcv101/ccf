@@ -9,19 +9,39 @@
 <body class="bg-gray-900 text-white min-h-screen flex justify-center items-center">
     <div class="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full text-center">
         <h2 class="text-2xl font-semibold">Make a Booking</h2>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+          {% if messages %}
+            <div class="mt-4">
+              {% for category, message in messages %}
+                <div class="p-3 rounded text-white bg-{% if category == 'success' %}green{% else %}red{% endif %}-500">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
         <form method="POST" action="{{ url_for('make_booking') }}" class="mt-6 space-y-4">
             {{ form.hidden_tag() }}
 
+            <!-- Start Time Input -->
             <div class="text-left">
                 <label class="block text-gray-300 font-semibold">{{ form.start_time.label }}</label>
-                <input type="datetime-local" name="start_time" class="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+                {{ form.start_time(class_="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500", value=form.start_time.data if form.start_time.data else "", type="datetime-local") }}
             </div>
 
+            <!-- Duration Input -->
             <div class="text-left">
                 <label class="block text-gray-300 font-semibold">{{ form.duration.label }}</label>
-                {{ form.duration(class_="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Enter duration in minutes") }}
+                {{ form.duration(class_="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Enter duration in minutes", min=duration_values.min, max=duration_values.max) }}
+                <p class="text-sm text-gray-400">Min Duration: {{ duration_values.min }} minutes</p>
+                <p class="text-sm text-gray-400">Max Duration: {{ duration_values.max }} minutes</p>
+
             </div>
 
+            <!-- Submit Button -->
             <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">Book Now</button>
         </form>
     </div>

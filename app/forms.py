@@ -40,3 +40,4 @@ class SecurityForm(FlaskForm):
     fetch_bookings=  SubmitField('Fetch bookings')
     booking = RadioField('Booking', choices=[(0, "No bookings selected")], coerce=int)
     Unlock =  SubmitField('Unlock computer')
+
