@@ -8,14 +8,30 @@
 </head>
 <body class="h-screen flex justify-center items-center bg-gradient-to-br from-purple-600 to-blue-800 text-white">
     <div class="bg-white bg-opacity-10 p-10 rounded-xl shadow-lg backdrop-blur-md text-center border border-white border-opacity-20 max-w-md w-full">
+         <!-- Flash Messages -->
+         {% with messages = get_flashed_messages(with_categories=True) %}
+         {% if messages %}
+             <div class="mt-4">
+                 {% for category, message in messages %}
+                     <div class="p-3 rounded text-white bg-{% if category == 'success' %}green{% else %}red{% endif %}-500">
+                         {{ message }}
+                     </div>
+                 {% endfor %}
+             </div>
+         {% endif %}
+         {% endwith %}
         <h1 class="text-3xl font-bold mb-4 drop-shadow-lg">Welcome, Admin!</h1>
         <p class="mb-6 text-lg">Select an action:</p>
         <ul class="space-y-4">
             <li><a href="{{ url_for('student_details_page') }}" class="block bg-yellow-400 text-blue-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">Student Details</a></li>
             <li><a href="{{url_for('booking_details_page')}}" class="block bg-yellow-400 text-blue-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">View Bookings</a></li>
+            <li><a href="{{url_for('booking_history_page')}}" class="block bg-yellow-400 text-blue-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">Booking history</a></li>
+            <li><a href="{{url_for('current_bookings_page')}}" class="block bg-yellow-400 text-blue-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">Current Bookings</a></li>
             <li><a href="{{ url_for('computer_management') }}" class="block bg-yellow-400 text-blue-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">View Computer Status</a></li>
-            <li><a href="{{ url_for('password_management') }}" class="block bg-yellow-400 text-blue-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">Change Password</a></li>
             <li><a href="{{ url_for('configure_page') }}" class="block bg-yellow-400 text-blue-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">Configure Variables</a></li>
+            <li><a href="{{ url_for('missbookers_page') }}" class="block bg-yellow-400 text-blue-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">Excess Miss bookings</a></li>
+            <li><a href="{{ url_for('change_a_password') }}" class="block bg-yellow-400 text-blue-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">Change passwords</a></li>
+            <li><a href="{{ url_for('admin_logout_page') }}" class="block bg-red-400 text-black-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">Logout admin</a></li>
         </ul>
     </div>
 </body>

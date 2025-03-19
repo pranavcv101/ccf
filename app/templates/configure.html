@@ -8,6 +8,11 @@
 </head>
 <body class="bg-gray-900 text-white min-h-screen p-6">
     <div class="max-w-4xl mx-auto bg-gray-800 p-8 rounded-lg shadow-lg">
+        <div class="mb-4 text-left">
+            <a href="{{ url_for('admin_page') }}" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">
+                ← Back to Admin Home
+            </a>
+        </div>
         <h2 class="text-3xl font-bold text-center text-blue-400 mb-6">Configure Variables</h2>
         
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -38,7 +43,7 @@
                             <td class="p-3 text-center">
                                 <form method="POST" class="flex items-center justify-center space-x-2">
                                     <input type="hidden" name="variable" value="{{ config.variables }}">
-                                    <input type="number" name="new_value" required 
+                                    <input type="text" name="new_value" required 
                                            class="w-20 p-2 bg-gray-600 border border-gray-500 rounded text-white 
                                                   focus:outline-none focus:ring-2 focus:ring-blue-500 text-center">
                             </td>

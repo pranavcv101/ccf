@@ -18,7 +18,7 @@ bcrypt= Bcrypt(app)
 # Initialize LoginManager
 login_manager = LoginManager() 
 login_manager.init_app(app)
-login_manager.login_view = 'student_login_page'  # This is the view where the user is redirected if not logged in
+login_manager.login_view = None  # This is the view where the user is redirected if not logged in
 login_manager.login_message_category = 'info'  # Flash message category for login-required messages
 
 #importing routes for flask to identify routes and other stuff  

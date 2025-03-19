@@ -8,6 +8,14 @@
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex justify-center items-center">
     <div class="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full text-center">
+        
+        <!-- Back to Student Page Button -->
+        <div class="mb-4 text-left">
+            <a href="{{ url_for('student_page') }}" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">
+                ← Back to Student Page
+            </a>
+        </div>
+
         <h2 class="text-2xl font-semibold">Make a Booking</h2>
 
         <!-- Flash Messages -->
@@ -38,7 +46,6 @@
                 {{ form.duration(class_="w-full p-2 mt-1 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder="Enter duration in minutes", min=duration_values.min, max=duration_values.max) }}
                 <p class="text-sm text-gray-400">Min Duration: {{ duration_values.min }} minutes</p>
                 <p class="text-sm text-gray-400">Max Duration: {{ duration_values.max }} minutes</p>
-
             </div>
 
             <!-- Submit Button -->

@@ -7,6 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="h-screen flex justify-center items-center bg-gradient-to-br from-purple-600 to-blue-800 text-white">
+    <!-- Navbar (Fixed on Top, Dark Theme) -->
+<nav class="bg-gray-900 text-white text-xl font-semibold py-4 fixed top-0 left-0 w-full shadow-md px-6">
+    Student Computer Facility
+</nav>
+
+<!-- Flash Messages (Appears Below Navbar) -->
+<div class="mt-16 px-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="text-center py-2 text-white rounded-lg mb-2 
+                            {% if category == 'success' %} bg-green-500 
+                            {% elif category == 'error' %} bg-red-500 
+                            {% else %} bg-gray-700 {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
     <div class="bg-white bg-opacity-10 p-10 rounded-xl shadow-lg backdrop-blur-md text-center border border-white border-opacity-20">
         <h1 class="text-4xl font-extrabold mb-6 drop-shadow-lg">Welcome to the CCF System</h1>
         <div class="space-y-4">

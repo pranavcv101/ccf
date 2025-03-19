@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField,PasswordField,SubmitField,IntegerField,DateTimeField,SelectField,RadioField
-from wtforms.validators import DataRequired,Length,Email
+from wtforms.validators import DataRequired,Length,Email,EqualTo
 
 class LoginForm(FlaskForm):
     rollno = StringField('Rollno', validators=[DataRequired(), Length(min=4, max=25)])
@@ -31,6 +31,7 @@ class AddUpdateComputerForm(FlaskForm):
     comp_id = StringField('Computer ID', validators=[DataRequired()])
     status = StringField('Status', validators=[DataRequired()])
     is_available = SelectField('Is Available', choices=[('True', 'Yes'), ('False', 'No')], validators=[DataRequired()])
+    ip = StringField("Ip address")
 
 class RemoveComputerForm(FlaskForm):
     comp_id = StringField('Computer ID', validators=[DataRequired()])
@@ -41,3 +42,17 @@ class SecurityForm(FlaskForm):
     booking = RadioField('Booking', choices=[(0, "No bookings selected")], coerce=int)
     Unlock =  SubmitField('Unlock computer')
 
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField("Old Password", validators=[DataRequired()])
+    new_password = PasswordField(
+        "New Password",
+        validators=[
+            DataRequired(),
+            Length(min=3, max=50, message="Password must be between 6 and 50 characters"),
+        ],
+    )
+    confirm_password = PasswordField(
+        "Confirm New Password",
+        validators=[DataRequired(), EqualTo("new_password", message="Passwords must match")],
+    )
+    submit = SubmitField("Change Password")

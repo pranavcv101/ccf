@@ -7,14 +7,24 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-white min-h-screen p-6">
-    <div class="max-w-4xl mx-auto bg-gray-800 p-8 rounded-lg shadow-lg">
+    <div class="max-w-6xl mx-auto bg-gray-800 p-8 rounded-lg shadow-lg">
+        <div class="mb-4 text-left">
+            <a href="{{ url_for('admin_page') }}" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">
+                ← Back to Admin Home
+            </a>
+        </div>
         <h1 class="text-3xl font-bold text-center text-blue-400 mb-6">Student Details</h1>
         
-        <input type="text" id="searchRollNo" placeholder="Search by Roll Number" onkeyup="searchFunction()" 
-               class="w-full p-3 mb-4 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
-        
-        <input type="text" id="searchName" placeholder="Search by Name" onkeyup="searchFunction()" 
-               class="w-full p-3 mb-4 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-white">
+        <div class="grid grid-cols-7 gap-2 mb-4">
+            <input type="text" id="searchRollNo" placeholder="Roll No" onkeyup="searchFunction()" 
+                   class="p-2 bg-gray-700 border border-gray-600 rounded text-white">
+            <input type="text" id="searchName" placeholder="Name" onkeyup="searchFunction()" 
+                   class="p-2 bg-gray-700 border border-gray-600 rounded text-white">
+            <input type="text" id="searchBatch" placeholder="Batch" onkeyup="searchFunction()" 
+                   class="p-2 bg-gray-700 border border-gray-600 rounded text-white">
+            <input type="text" id="searchPassout" placeholder="Passout Year" onkeyup="searchFunction()" 
+                   class="p-2 bg-gray-700 border border-gray-600 rounded text-white">
+        </div>
 
         <div class="overflow-x-auto">
             <table id="studentsTable" class="w-full text-left border-collapse">
@@ -25,6 +35,10 @@
                         <th class="p-3">Phone</th>
                         <th class="p-3">Email</th>
                         <th class="p-3">No of Bookings</th>
+                        <th class="p-3">Missed Bookings</th>
+                        <th class="p-3">Batch</th>
+                        <th class="p-3">Passout</th>
+                        <th class="p-3">Action</th>
                     </tr>
                 </thead>
                 <tbody class="bg-gray-700 divide-y divide-gray-600">
@@ -35,10 +49,18 @@
                         <td class="p-3">{{ student.phone }}</td>
                         <td class="p-3">{{ student.email }}</td>
                         <td class="p-3">{{ student.no_of_bookings }}</td>
+                        <td class="p-3">{{ student.bookings_missed }}</td>
+                        <td class="p-3">{{ student.batch }}</td>
+                        <td class="p-3">{{ student.year_of_passout }}</td>
+                        <td class="p-3">
+                            <button onclick="removeStudent('{{ student.rollno }}')" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+                                Remove
+                            </button>
+                        </td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="5" class="p-3 text-center text-gray-400">No students found.</td>
+                        <td colspan="8" class="p-3 text-center text-gray-400">No students found.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -50,23 +72,53 @@
         function searchFunction() {
             const rollNoInput = document.getElementById('searchRollNo').value.toLowerCase();
             const nameInput = document.getElementById('searchName').value.toLowerCase();
+            const batchInput = document.getElementById('searchBatch').value.toLowerCase();
+            const passoutInput = document.getElementById('searchPassout').value.toLowerCase();
+            
             const table = document.getElementById('studentsTable');
             const tr = table.getElementsByTagName('tr');
             
             for (let i = 1; i < tr.length; i++) {
                 const rollNoTd = tr[i].getElementsByTagName('td')[0];
                 const nameTd = tr[i].getElementsByTagName('td')[1];
+                const batchTd = tr[i].getElementsByTagName('td')[5];
+                const passoutTd = tr[i].getElementsByTagName('td')[6];
                 
-                if (rollNoTd && nameTd) {
+                if (rollNoTd && nameTd && batchTd && passoutTd) {
                     const rollNoTxt = rollNoTd.textContent || rollNoTd.innerText;
                     const nameTxt = nameTd.textContent || nameTd.innerText;
+                    const batchTxt = batchTd.textContent || batchTd.innerText;
+                    const passoutTxt = passoutTd.textContent || passoutTd.innerText;
                     
-                    if (rollNoTxt.toLowerCase().indexOf(rollNoInput) > -1 && nameTxt.toLowerCase().indexOf(nameInput) > -1) {
+                    if (rollNoTxt.toLowerCase().includes(rollNoInput) &&
+                        nameTxt.toLowerCase().includes(nameInput) &&
+                        batchTxt.toLowerCase().includes(batchInput) &&
+                        passoutTxt.toLowerCase().includes(passoutInput)) {
                         tr[i].style.display = "";
                     } else {
                         tr[i].style.display = "none";
                     }
                 }
+            }
+        }
+
+        function removeStudent(rollno) {
+            if (confirm("Are you sure you want to remove this student? This will also move all their bookings to history.")) {
+                fetch(`/remove_student/${rollno}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Student removed successfully.");
+                        location.reload();
+                    } else {
+                        alert("Error removing student.");
+                    }
+                });
             }
         }
     </script>

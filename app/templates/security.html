@@ -9,6 +9,18 @@
 <body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-6">
     <div class="max-w-lg w-full bg-gray-800 p-8 rounded-lg shadow-lg">
         <h1 class="text-3xl font-bold text-center text-blue-400 mb-6">CCF Security Check</h1>
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+          <div class="mt-4">
+            {% for category, message in messages %}
+              <div class="p-3 rounded text-white bg-{% if category == 'success' %}green{% else %}red{% endif %}-500">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
 
         <!-- Form to Fetch Bookings -->
         <form method="POST" class="mb-6">
@@ -43,8 +55,9 @@
                     Unlock Computer
                 </button>
             </form>
+        
         {% endif %}
-
+        <a href="{{ url_for('security_logout_page') }}" class="block bg-red-400 text-black-900 font-semibold py-3 px-6 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">Logout security</a>
         {% if error %}
             <p class="text-red-500 text-center mt-4">{{ error }}</p>
         {% endif %}

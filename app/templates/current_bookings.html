@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Details</title>
+    <title>Current Bookings</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-white min-h-screen p-6">
     <div class="max-w-5xl mx-auto bg-gray-800 p-8 rounded-lg shadow-lg">
-        <h2 class="text-3xl font-bold text-center text-blue-400 mb-6">Booking Details</h2>
         <div class="mb-4 text-left">
             <a href="{{ url_for('admin_page') }}" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded">
                 ← Back to Admin Home
             </a>
         </div>
+        <h2 class="text-3xl font-bold text-center text-blue-400 mb-6">Current Bookings</h2>
+
         <!-- Filter form -->
         <form class="mb-4">
             <div class="mb-3">
@@ -39,7 +40,6 @@
                         <th class="p-3">Start Time</th>
                         <th class="p-3">Duration (minutes)</th>
                         <th class="p-3">Status</th>
-                        <th class="p-3">Action</th>
                     </tr>
                 </thead>
                 <tbody class="bg-gray-700 divide-y divide-gray-600">
@@ -51,11 +51,6 @@
                         <td class="p-3 booking-datetime">{{ booking.start_time }}</td>
                         <td class="p-3">{{ booking.duration }}</td>
                         <td class="p-3">{{ booking.status }}</td>
-                        <td class="p-3">
-                            <form method="POST" action="{{ url_for('cancel_a_booking', booking_id=booking.id) }}" onsubmit="return confirmCancel()">
-                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Cancel</button>
-                            </form>
-                        </td>
                     </tr>
                     {% else %}
                     <tr>
@@ -96,10 +91,6 @@
                     row.style.display = 'none'; // Hide the row
                 }
             }
-        }
-
-        function confirmCancel() {
-            return confirm("Are you sure you want to cancel this booking?");
         }
     </script>
 </body>

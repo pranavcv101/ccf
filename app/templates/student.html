@@ -7,7 +7,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex justify-center items-center">
+  
     <div class="bg-gray-800 p-8 rounded-lg shadow-lg max-w-2xl w-full text-center">
+              <!-- Flash Messages -->
+              {% with messages = get_flashed_messages(with_categories=True) %}
+              {% if messages %}
+                <div class="mt-4">
+                  {% for category, message in messages %}
+                    <div class="p-3 rounded text-white bg-{% if category == 'success' %}green{% else %}red{% endif %}-500">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
         <h1 class="text-2xl font-semibold">Welcome {{ student.name }}</h1>
         <p class="text-gray-400">Roll No: {{ student.rollno }}</p>
         <p class="text-gray-400">Email: {{ student.email }}</p>
@@ -56,14 +69,14 @@
         </script>
         
         <h3 class="text-xl mt-6 font-semibold">Options</h3>
-        <h3 class="text-xl mt-6 font-semibold">Options</h3>
+
         <div class="mt-4 space-x-4">
-            {% if active_bookings >= max_bookings.values %}
+            {% if active_bookings >= max_bookings %}
                 <button class="bg-gray-500 text-white font-semibold py-2 px-4 rounded cursor-not-allowed opacity-50" disabled>
                     Make a New Booking
                 </button>
                 <p class="text-red-400 text-sm mt-2">You have exceeded the booking limit</p>
-            {% elif student.bookings_missed >= max_missed_bookings.values %}
+            {% elif student.bookings_missed >= max_missed_bookings %}
             <button class="bg-gray-500 text-white font-semibold py-2 px-4 rounded cursor-not-allowed opacity-50" disabled>
                 Make a New Booking
             </button>
@@ -73,6 +86,7 @@
                     Make a New Booking
                 </a>
             {% endif %}
+            <a href="{{ url_for('change_s_password') }}" class="bg-yellow-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">Change Password</a>
             <a href="{{ url_for('student_logout') }}" class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">Logout</a>
         </div>
         
